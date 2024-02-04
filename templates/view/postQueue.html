@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block user_page %}
+<div class="loader-wrapper">
+    <div class="loader"></div>
+</div>
+<div class="my-3 p-3 w-100 bg-white">
+    <div class="row w-100 m-0">
+      <div class="col-md-3">
+        <label for="fb_pages">Task type:</label>
+        <select class="form-control selectpicker my-2" id="task_type" name="page_select" multiple>
+            <option value="approved">Approved</option>  
+            <option value="pending">Pending</option>  
+            <option value="decline">Declined</option>  
+        </select> 
+      </div>
+      <div class="col-md-3">
+      </div>
+      <div class="col-md-3">
+        <!-- <label for="fb_pages">Group by:</label>
+        <select class="form-control selectpicker my-2" id="social_type" name="page_select">
+            <option value="true">Scheduled</option>  
+            <option value="false">Posted</option>  
+        </select> -->
+      </div>
+      <div class="col-md-3 my-4">
+        <button class="btn btn-dark px-5 w-100" onclick="taskQueue()">Submit</button>
+      </div>
+    </div>
+   
+    <div class="bg-white p-2 report_section w-100" id="listArea">
+      
+    </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+<script></script>
+{% endblock %}

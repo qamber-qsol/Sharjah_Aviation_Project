@@ -1,0 +1,76 @@
+
+label.button_select{
+    border: 1px solid #ccbdbd;
+    border-radius: 6px;
+}
+
+.btn-group .select input:checked + label.button_select {
+  box-shadow: 0 0 2px rgba(0,0,0,.5), 0 2px 2px rgba(0,0,0,.5);
+  border:1px solid #99578F;
+ 
+  transform: translateY(-2px);
+  }
+  .btn-group .select input:checked + label.button_select:hover, .btn-group .select input:checked + label.button_select:focus, .btn-group .select input:checked + label.button_select:active {
+    box-shadow: 0 0 2px rgba(0,0,0,.5), 0 2px 2px rgba(0,0,0,.5);
+    border:1px solid #99578F;
+   
+    transform: translateY(-2px);
+    
+  }
+  .btn-group .select input {
+    opacity: 0;
+    position: absolute;
+  }
+  .btn-group .select .button_select {
+    margin: 0 6px 6px 0;
+    display: flex;
+    background-color: transparent;
+    font-size: 14px;
+    padding: 4px;
+    transition-duration: .3s;
+    transition-property: transform, box-shadow;
+  }
+  .btn-group .select .button_select:hover, .btn-group .select .button_select:focus, .btn-group .select .button_select:active {
+    background-color: transparent;
+  }
+  
+  .option {
+    position: relative;
+  }
+  .option input {
+    opacity: 0;
+    position: absolute;
+  }
+  .option input:checked + span {
+    border:1px solid #99578F;
+  }
+  .option input:checked + span:hover, .option input:checked + span:focus, .option input:checked + span:active {
+    border:1px solid #99578F;
+  }
+  .option .btn-option {
+    margin: 0 10px 10px 0;
+    display: flex;
+    background-color: transparent;
+  }
+  .option .btn-option:hover, .option .btn-option:focus, .option .btn-option:active {
+    background-color: transparent;
+  }
+  #post_reponse ul {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+  }
+  /* ((21,"PAGE-1",321654165165),(21,"PAGE-1",321654165165),(21,"PAGE-1",321654165165)) */
+  /* Style the li items */
+  #post_reponse li {
+    background-color: #e0e0e0; /* Alternate background color for odd li items */
+    font-weight: bold; /* Make odd li items bold */
+    color: #007bff;
+    margin-bottom: 10px; /* Add some vertical spacing between li items */
+    padding: 10px; /* Add padding to li items for spacing and aesthetics */
+    border: 1px solid #ccc; /* Add a border for each li item */
+    border-radius: 5px; /* Round the corners of each li item */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for a modern look */
+    font-size: 16px; /* Adjust font size */
+   
+  }

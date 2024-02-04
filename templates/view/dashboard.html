@@ -1,0 +1,110 @@
+
+    
+{% extends "base.html" %}
+
+{% block stylesheets %}
+    <style>
+        .pending{
+            background-color: #f0ad4e;
+            color: white!important;
+        }
+        .pending:hover{
+        opacity: 0.8; cursor: pointer;   
+        }
+        .approve{
+            background-color: #5cb85c;
+            color: white!important;
+        }
+        .approve:hover{
+            opacity: 0.8; cursor: pointer;  
+        }
+        .schedule{
+            background-color: #d9534f;
+        color: white!important;   
+        }
+        .schedule:hover{
+            opacity: 0.8; cursor: pointer;  
+        }
+
+    </style>
+{% endblock %}
+
+{% block user_page %}
+    <div class="bg-white container-fluid p-4 w-100">
+        <div class="row">
+        <div class="col-8">
+            <div class="row"> 
+             <div class="h2 mx-4 my-2">Today's Tasks</div>
+            
+                <div class="m-0 p-4 row w-100">
+                <div class="col-4 p-1">             
+                    <div class="shadow p-3 rounded pending">
+                        <div class="m-2">
+                            <div class="h6">Pending</div>
+                            <h1>{{ results[0][0] }}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 p-1">
+                    <div class="shadow p-3 rounded  approve">
+                        <div class="m-2">
+                            <div class="h6">Approved</div>
+                            <h1>{{ results[1][0] }}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 p-1">
+                    <div class="shadow p-3 rounded  schedule">
+                        <div class="m-2">
+                            <div class="h6">Decline</div>
+                            <h1>{{ results[2][0] }}</h1>
+                        </div>
+                    </div>
+                </div>
+                </div>
+               
+                </div>
+            <div class="p-4 row shadow">
+                <div class="h3 text-info">Pending task</div>
+                <table class="report_table table table-hover text-capitalize">
+                    <thead>
+                        <tr>  
+                            <th>Social-Type</th>
+                            <th>Client</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in pending %}
+                        <tr>
+                            <td> {{i[0]}}</td><td> {{i[1]}}</td><td> {{i[2]}}</td><td> {{i[3]}}</td>
+                        </tr>
+                        {% endfor %}  
+                    </tbody>
+                    
+                </table>
+            </div>
+        </div>
+        <div class="col-4 p-4 shadow">
+            <div class="h3 text-info">Current Clients</div>
+            <table class="report_table table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>  
+                        <th>id</th>
+                        <th>Member</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in clients %}
+                    <tr><td> {{i[0]}}</td><td> {{i[1]}}</td></tr>
+                    {% endfor %}  
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+<script></script>
+{% endblock %}

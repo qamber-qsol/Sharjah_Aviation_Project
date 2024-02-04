@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="icon" href="static/images/myfavicon.ico" type="image/x-icon">
+    <link href="	https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='SignUp.css') }}">
+    <title>Sign Up</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="loader-wrapper">
+        <div class="loader"></div>
+      </div>
+    <div class="container register shadow-lg">
+      <div class="row">
+          <div class="col-md-3 register-left">
+              <div class="py-3"></div>
+              <h3>Welcome To Recomm !</h3>
+              <p>You first register you organization ! You will receive your confirmation on email </p>
+              <a href="{{ url_for('LOGIN')}}" class="btn btn-light w-50">Login</a>
+          </div>
+          <div class="col-md-9 register-right">
+
+              <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade fadeInLeft show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                      <h3 class="register-heading">Register Your Organization</h3>
+                      <div class="row register-form">
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <input type="text" class="form-control" placeholder="Owner's Name *" value="" />
+                              </div>
+                              <div class="form-group">
+                                  <input type="email" class="form-control" placeholder="Organization Email *" value="" />
+                              </div>
+                              <div class="form-group">
+                                  <input type="password" class="form-control" id="password" placeholder="Password *" value="" />
+                              </div>
+                              <div class="form-group">
+                                  <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password *" value="" />
+                              </div>
+                              <div class="form-group">
+                                  <div class="maxl">
+                                    <input type="checkbox" name="terms_and_conditions" id="terms_and_conditions"> 
+                                    <label for="terms_and_conditions">I agree to the <a href="https://therecomm.com/terms" target="_blank">Terms and Conditions</a></label>
+                                  </div>
+                              </div>
+                              
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <input type="email" class="form-control" placeholder="Organization Name *" value="" />
+                              </div>
+                              <div class="form-group">
+                                <select class="form-control">
+                                    <option class="hidden" selected disabled>Organization Type</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="media">Media</option>
+                                    <option value="hospital">Hospital</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="education">Education</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="retail">Retail</option>
+                                    <option value="entertainment">Entertainment</option>
+                                    <option value="non-profit">Non-Profit</option>
+                                    <option value="government">Government</option>
+                                    <option value="consulting">Consulting</option>
+                                    <option value="transportation">Transportation</option>
+                                    <option value="real-estate">Real Estate</option>
+                                    <option value="agriculture">Agriculture</option>
+                                    <option value="hospitality">Hospitality</option>
+                                    <option value="energy">Energy</option>
+                                    <option value="construction">Construction</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="legal">Legal</option>
+                                    <option value="automotive">Automotive</option>
+                                    <option value="environmental">Environmental</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                              <div class="form-group">
+                                  <input type="text" minlength="10" maxlength="10" name="txtEmpPhone" class="form-control" placeholder="Your Phone *" value="" />
+                              </div>
+                              
+                              <div class="form-group">
+                                <div class="maxl">
+                                    <button type="button" class="d-none g-recaptcha captcha-btn" 
+                                        data-sitekey="6LeRFwopAAAAAHguElstFlLmH2-7xtQPJaVQpfXz" 
+                                        data-callback='onSubmit'
+                                        data-action='submit'>Submit</button>
+                                    <!-- <div class="g-recaptcha" 
+                                        data-sitekey='6LeRFwopAAAAAHguElstFlLmH2-7xtQPJaVQpfXz'
+                                        data-callback='onSubmit' 
+                                        data-action='submit'>
+                                    </div> -->
+                                </div>
+                            </div>
+
+                              <input type="submit" class="btnRegister" value="Register" />
+                          </div>
+                      </div>
+                  </div>
+                  <div class="tab-pane fade fadeInLeft show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                      <h3 class="register-heading">Thank You !</h3>
+                      <div class="row register-form">
+                        <div class="container-fluid p-4 text-center">
+                          <div class="h4">We will review your application!</div>
+                          <div class="hidden">You will receive email after review your application</div>
+                      </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+  </div>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/signup.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>   
+  <script src="https://www.google.com/recaptcha/api.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>   
+  
+  <script defer src="https://www.google.com/recaptcha/api.js?render=6LeRFwopAAAAAHguElstFlLmH2-7xtQPJaVQpfXz"></script>
+
+<script defer type="text/javascript">
+    $(document).ready(function()     {
+        // Request a reCAPTCHA token
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6LeRFwopAAAAAHguElstFlLmH2-7xtQPJaVQpfXz', { action: 'submit' })
+                .then(function(token) {
+                    // Call the onSubmit function with the generated token
+                    onSubmit(token);
+                });
+        });
+    });
+
+    function onSubmit(token) {
+        // Handle the reCAPTCHA token
+        let data = {
+            "token": token
+        };
+
+        // Send the token to the server using axios or your preferred method
+        axios({
+            method: "POST",
+            url: "/verify_captcha",
+            data: data
+        }).then((res) => {
+            console.log(res.data.status);
+        });
+    }
+</script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>   
+  <script type="text/javascript" src="{{ url_for('static', filename='js/smm_main.js') }}"></script>
+
+</body>
+
+</html>

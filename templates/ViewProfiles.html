@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ProfileMidPage.css') }}">
+{% endblock %}
+
+{% block user_page %}  
+<div class="loader-wrapper">
+    <div class="loader"></div>
+  </div>   
+  <div class="bg-tbc h4 p-3 rounded row text-light w-100 m-0">
+    <div class="align-self-center col-lg-9 col-md-9 d-flex p-0">
+            <div>Select Accounts-</div>
+            <!-- <div>0</div> -->
+    </div>
+    <div class="align-self-center col-lg-3 col-md-3 d-flex p-0">
+        <button class="btn btn-light w-100" onclick="ProfileView()">Done</button>
+    </div>
+   
+    </div>
+<div class="border container-fluid m-0 my-4">
+        <div class="container m-4 p-0">
+        <div class="btn-group row w-100 m-0" id="new_accounts">
+        {% for i in profiledata %}
+                
+           
+           <div class="col-lg-3">
+            <div class="select">
+                <input type="checkbox" id="{{ i[0] }}" name="facebook">
+                <label class=" button_select" for="{{ i[0] }}">              
+                    <div class="my-2 mycontent" style="display: flex;align-items: center;">
+                        <i class="bg-dark fa fa-2x fa-{{social_type}} mx-1 p-2 rounded-circle text-light"></i>
+                        <div class="details mx-1" style=" font-size: 0.8em;">
+                          <p class="m-0">{{ i[2] }}</p>
+                          <p class="m-0">{{ i[1] }}</p>
+                        </div>
+                      </div>
+                </label>
+            </div>
+            </div>
+            {% endfor %}
+
+        </div>
+       
+        </div>
+        
+    </div>
+    {% endblock %}
+    {% block javascript %}
+    
+    {% endblock %}

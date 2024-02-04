@@ -1,0 +1,51 @@
+
+  {% extends "base.html" %}
+
+  {% block user_page %}
+    <div class="loader-wrapper">
+      <div class="loader"></div>
+  </div>
+    <div class="bg-white container my-5 w-75 p-0">
+      <div class="bg-tbc shadow text-white p-3">
+        <h1 class="h1 text-center m-0">Create New User</h1>
+      </div>
+        <form class="add_user p-3" role="form" id="add_user">
+          <label for="role">Assign Group:</label>
+          <select class="form-control selectpicker my-2" id="client_ids" name="client_select" multiple>
+            {% for i in clients %}
+              <option value="{{ i[0] }}">{{ i[1] }}</option>  
+            {% endfor %}    
+          </select>
+          <label for="role">Assign Role:</label>
+          <select class="form-control selectpicker" id="role" name="page_select">
+              <option value="0" selected disabled>None</option>
+              <option value="2">Manager</option>
+              <option value="3">Member</option>
+          </select>
+        <div id="ManagerSelection" class="d-none">
+          <label for="role">Select Manager:</label>
+          <select class="form-control selectpicker" id="selectManager" name="page_select">
+              <option value="0" selected>None</option>
+              {% for i in managerid %}
+              <option value="{{ i[0] }}">{{ i[1] }}</option>  
+              {% endfor %}  
+          </select>
+        </div>
+          <label for="text">Name:</label>
+          <input class="form-control" type="text" id="name">
+          <label for="text">Username/email:</label>
+          <input  class="form-control" type="text"  id="NewUserEmail">
+          <label for="text">Password</label>
+          <input class="form-control" type="password"  id="password" class="w-100">
+          <label for="text">Re-Password</label>
+          <input class="form-control" type="password"  id="repassword" class="w-100">
+          <button type="button" id="submit_user" class="btn btn-lg btn-outline-primary mt-3" style="font-size: 20px;">Create User</button>
+        </form>
+      </div>
+    
+    {% block sel_js %}
+    
+  
+  {% endblock %}
+  {% endblock %}  
+

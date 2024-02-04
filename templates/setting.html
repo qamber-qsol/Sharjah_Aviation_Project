@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+    <style>
+        .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+        color: #fff!important;
+        background-color: #784391!important;
+        }
+        a {
+        
+        text-decoration: none;
+        background-color: transparent;
+        }
+    </style>
+{% endblock %}
+
+{% block user_page %}
+    <div class="loader-wrapper">
+        <div class="loader"></div>
+    </div>
+    <div class="bg-white p-3 w-100 shadow">
+        <div class="row">
+            <div class="border-right col-md-3">
+                <div class="vertical-nav nav-pills">
+                    <ul class="nav flex-column" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link font-weight-bold active" data-toggle="tab" href="#tabs-1" role="tab" style="color: #686767">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link font-weight-bold" data-toggle="tab" href="#tabs-2" role="tab"style="color: #686767">Change Password</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link font-weight-bold" data-toggle="tab" href="#" role="tab" style="color: #686767">Upgrade</a>
+                        </li>
+                    </ul>
+                </div>
+        
+            </div>
+            <!-- Tab panes -->
+            <div class="col-9">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                        <div class="">
+                            <h3 class="mb-4 mt-2">About Profile</h3>
+                            <div class="flex-column px-3 row">
+                                <div class="border-bottom d-flex mb-2 pb-2">
+                                    <div class="font-weight-bold">Name</div>
+                                    <div class="ml-3 text-capitalize">{{ uName }}</div>
+                                </div>
+                                <div class=" d-flex mb-2 pb-2">
+                                    <div class="font-weight-bold">Account Type:</div>
+                                    <div class="ml-3 text-capitalize">{{ accType }}</div>
+                                </div>
+                               <!-- <div class=" d-flex mb-2 pb-2">
+                                    <div class="font-weight-bold">Organization Name:</div>
+                                    <div class="ml-3 text-capitalize">{{ accType }}</div>
+                                </div> -->
+                            </div>
+        
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tabs-2" role="tabpanel">
+                        <h3 class="mb-4 mt-2">Change Your Password</h3>
+                        <div class="col-md-6">
+                            <form id="passwordChangeForm">
+                                <div class="form-group">
+                                    <label>Old Password</label>
+                                    <input type="password" class="form-control" id="oldPassword"
+                                        aria-describedby="passwordHelp" placeholder="Old Password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">New Password</label>
+                                    <input type="password" class="form-control" id="newpassword"
+                                        placeholder="New Password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputre-typepass">Re-type New Password</label>
+                                    <input type="password" class="form-control" id="renewpassword"
+                                        placeholder="Re-type New Password">
+                                </div>
+                                <button type="submit" class="btn btn-primary" onclick="ChangePassword()">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tabs-3" role="tabpanel">
+                        <p>Third Panel</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ {% endblock %}
+{% block javascript %}
+<script></script>
+{% endblock %}

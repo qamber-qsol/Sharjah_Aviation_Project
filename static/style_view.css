@@ -1,0 +1,461 @@
+
+
+
+.six { width: 49.2%; }
+/* .loader-small{
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  position: relative;
+  margin: 0 auto; 
+}
+#loader-small-6{
+  top: 40px;
+  left: -2.5px;
+} */
+
+#loader-small-6 span{
+  display: inline-block;
+  width: 5px;
+  height: 20px;
+  background-color:#784391;
+}
+
+#loader-small-6 span:nth-child(1){
+  animation: grow 1s ease-in-out infinite;
+}
+
+#loader-small-6 span:nth-child(2){
+  animation: grow 1s ease-in-out 0.15s infinite;
+}
+
+#loader-small-6 span:nth-child(3){
+  animation: grow 1s ease-in-out 0.30s infinite;
+}
+
+#loader-small-6 span:nth-child(4){
+  animation: grow 1s ease-in-out 0.45s infinite;
+}
+
+@keyframes grow{
+  0%, 100%{
+    -webkit-transform: scaleY(1);
+    -ms-transform: scaleY(1);
+    -o-transform: scaleY(1);
+    transform: scaleY(1);
+  }
+
+  50%{
+    -webkit-transform: scaleY(1.8);
+    -ms-transform: scaleY(1.8);
+    -o-transform: scaleY(1.8);
+    transform: scaleY(1.8);
+  }
+}
+
+
+.postContentModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+	  z-index: 103;
+    }
+    .demoWrapper{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #88888887;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .wrappervisible {
+      display: none;
+    }
+    /* Styles for the modal content */
+    .postContentModal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      position: relative; /* Added to make sure close button is positioned relative to the modal content */
+    }
+
+    /* Style for the close button */
+    .postContentModal-close {
+        cursor: pointer;
+        position: absolute;
+        top: -10px;
+        right: -8px;
+    
+        font-size: 20px;
+        font-weight: bold;
+        background: black;
+        color: white;
+        border-radius: 102%;
+        padding: 0px 5px 0px 5px;
+    }
+.mycontainer{
+  
+  overflow: hidden;
+  background: #fff;
+  border-radius: 10px;
+  transition: height 0.2s ease;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+.mycontainer.active{
+  height: 590px;
+}
+#charaterCount {
+  color: #13D1D8;
+}
+.mycontainer .wrapper{
+  width: 1000px;
+  display: flex;
+}   
+.MainPintUi{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 12px;
+  border: 1px solid #b4b1b1;
+}
+.pImageDiv{
+ 
+  height: 75%;
+}
+.pinteresTextArea{
+  resize: none;
+    font-size: 0.9em;
+    border: none; 
+    height: fit-content;
+    width: 100%;
+    border: none;
+    word-wrap: break-word;
+}
+.pContentDiv{
+  min-height: 58px;
+}
+.ImageArea{
+  width: 100%;
+  height: 100%;
+}
+
+img.ImagePinterest{
+  vertical-align: middle;
+  border-style: none;
+  width: 100%;
+  max-height: 359px;
+  border-radius: 12px;
+}
+.firstTag{
+  display: flex;
+  justify-content: start;
+}
+
+
+.ButtonsArea{
+  position: absolute;
+    top: 9%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    width: 100%;
+
+}
+.fbutton{
+  display: flex;
+  flex-flow: row;
+  border-top: 1px solid #bfbfbf;
+  width: inherit;
+  height: 6vh;
+}
+
+.sub{
+  padding: 6px;
+  margin: 3px;
+}
+.color-group ,.color-group-campaign{
+  display: flex;
+  align-items: center;
+  
+}
+
+.color-radio ,.color-radio-campaign {
+  display: none; 
+}
+
+.color-label,.color-label-campaign {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 0px 0px 0px 0px;
+}
+
+.color-radio-label ,.color-radio-campaign-label {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  transition: transform 0.2s ease-in-out, border 0.2s ease-in-out;
+  border-radius: 99%;
+}
+
+.color-radio:checked + .color-label .color-radio-label {
+  transform: scale(1.2); 
+  border: 1px solid #8a8888;
+}
+.color-radio-campaign:checked + .color-label-campaign .color-radio-campaign-label {
+  transform: scale(1.2); 
+  border: 1px solid #8a8888;
+}
+.sub img{
+  width: 21px;
+  margin: 0px 5px 0px 0px;
+}
+.mycontainer .wrapper section{
+  width: 500px;
+  background: #fff;
+}
+.mycontainer img{
+  cursor: pointer;
+}
+.mycontainer .mypost{
+  transition: margin-left 0.18s ease;
+}
+.mycontainer.active .mypost{
+  margin-left: -500px;
+}
+.mypost header{
+  font-size: 22px;
+  font-weight: 600;
+  padding: 17px 0;
+  text-align: center;
+  border-bottom: 1px solid #bfbfbf;
+}
+.mypost form{
+  margin: 20px 25px;
+  height: 100%;
+}
+.mypost form .mycontent,
+.audience .list li .column{
+  display: flex;
+  align-items: center;
+}
+.mypost form .mycontent img{
+  cursor: defaults;
+    max-width: 38px;
+    margin: -19px 0px 0px 0px;
+}
+.mypost form .mycontent .details{
+  margin: -3px 0 0 12px;
+}
+form .mycontent .details p{
+  font-size: 17px;
+  font-weight: 500;
+}
+.mycontent .details .privacy{
+  display: flex;
+  height: 25px;
+  cursor: pointer;
+  padding: 0 10px;
+  font-size: 11px;
+  margin-top: 3px;
+  border-radius: 5px;
+  align-items: center;
+  max-width: 98px;
+  background: #E4E6EB;
+  justify-content: space-between;
+}
+
+form :where(.myfbview, button){
+  width: 100%;
+  outline: none;
+  border: none;
+}
+form .myfbview{
+  resize: none;
+    font-size: 0.9em; 
+    border: none;
+    margin: 15px 0px 11px 0px;
+    height: fit-content;
+    width: 100%;
+    border: none;
+    word-wrap: break-word;
+}
+form .myfbview::placeholder{
+  color: #858585;
+}
+form .myfbview:focus::placeholder{
+  color: #b3b3b3;
+}
+form :where(.theme-emoji, .options){
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.theme-emoji img:last-child{
+  max-width: 24px;
+}
+form .options{
+  height: 57px;
+  margin: 15px 0;
+  padding: 0 15px;
+  border-radius: 7px;
+  border: 1px solid #B9B9B9;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+form .options :where(.list, li),
+.audience :where(.arrow-back, .icon, li .radio){
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+form .options p{
+  color: #595959;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: default;
+}
+form .options .list{
+  list-style: none;
+}
+.options .list li{
+  height: 42px;
+  width: 42px;
+  margin: 0 -1px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.options .list li:hover{
+  background: #f0f1f4;
+}
+.options .list li img{
+  width: 23px;
+}
+form button{
+  height: 53px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #BCC0C4;
+  cursor: no-drop;
+  
+  background: #e2e5e9;
+  transition: all 0.3s ease;
+}
+form .myfbview:valid ~ button{
+  color: #fff;
+  cursor: pointer;
+  background: #4267B2;
+}
+form .myfbview:valid ~ button:hover{
+  background: #4267B2;
+}
+.mycontainer .audience{
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.mycontainer.active .audience{
+  opacity: 1;
+}
+
+.ai_side_panel {
+  left: inherit;
+  width: 50%;
+  height: 100%;
+  background: #f5f5f5;
+  z-index: 15000;
+  overflow: hidden;
+  transition: 0.5s;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.6s;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  transform: translateX(100%);
+  transition: .3s ease-out;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+.typing {
+  background: rgb(255, 255, 255);
+  border-top-color: rgb(234, 234, 234);
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  height: 5vh;
+}
+
+.typing input {
+  color: rgb(150, 155, 166);
+  font-size: 16px;
+  line-height: 20px;
+  height: 100%;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 0 0px;
+  flex: 1 0 0;
+  padding: 0 20px;
+  background: transparent;
+  border: 0;
+}
+
+.typing #send_icon {
+    /* width: 69%; */
+    width: 26px;
+    height: 26px;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 26px;
+    flex: 0 0 26px;
+    -webkit-backface-visibility: hidden;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    cursor: pointer;
+}
+p{
+  margin-top: 0 !important;
+  margin-bottom: 0rem !important;
+}
+#post_content {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    
+    overscroll-behavior-y: contain;
+    /* display: -webkit-box; */
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    /* width: 100%; */
+    height: calc(74vh - 14vh);
+    -webkit-box-flex: 1;
+    -ms-flex: 1 0 0px;
+    flex: 64vh 0 0;
+    /* overflow-x: hidden; */
+    /* overflow-y: auto; */
+}
+
+#post_content #human_text {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#post_content #bot_text {
+    display: flex;
+}

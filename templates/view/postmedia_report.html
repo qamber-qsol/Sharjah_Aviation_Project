@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block user_page %}
+
+<div class="my-3 p-3 w-100 bg-white">
+<div class="row w-100 m-0">
+  <div class="col-md-3">
+    <label for="fb_pages">Select Client:</label>
+    <select class="form-control selectpicker my-2" id="client_type" name="page_select" multiple>
+      {% for i in pages %}
+        <option value="{{ i[0] }}">{{ i[1] }}</option>  
+      {% endfor %}    
+    </select> 
+  </div>
+  <div class="col-md-3">
+    <label for="fb_pages">Select Social Media:</label>
+    <select class="form-control selectpicker my-2" id="social_type" name="page_select" multiple>
+      {% for i in socials %}
+        <option value="{{ i[0] }}">{{ i[0] }}</option>  
+      {% endfor %}    
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label for="fb_pages">Select To:</label>
+    <input type="date" name="report_date" id="to_date" class="form-control my-2">
+  </div>
+  <div class="col-md-3">
+    <label for="fb_pages">Select From:</label>
+    <input type="date" name="report_date" id="from_date" class="form-control my-2">
+  </div>
+</div>
+<div class="m-0 my-2 row w-100">
+  <div class="col-md-4"></div>  
+  <div class="col-md-4"></div>
+ 
+  <div class="col-md-4">
+    <div class="float-right">
+    <button class="btn btn-primary btn-secondary disabled px-4" id="downloadButton" >Download</button>
+
+    <button class="btn btn-dark px-5" onclick="generate_report()">Submit</button>
+  </div>
+  </div>
+</div>
+<div class="report_section">
+<table class="report_table table table-bordered table-hover table-striped">
+      <tr>
+          <th>Client</th>
+          <th>Social Media</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Created At</th>
+          <th>Created By</th>
+          
+          {% for i in my_data %}
+          <tr><td>{{ i[1] }}</td><td>{{ i[2] }}</td><td>{{ i[3] }}</td><td>{{ i[4] }}</td></tr>
+        {% endfor %}
+</table>
+</div>
+</div>
+{% endblock %}
+{% block javascript %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+    document.getElementById('downloadButton').addEventListener('click', function () {
+      
+        var table = document.querySelector('.report_table');
+        var ws = XLSX.utils.table_to_sheet(table);
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); 
+        var blob = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        var arrayBufferView = new Uint8Array(blob);
+        var blobObject = new Blob([arrayBufferView], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        var url = URL.createObjectURL(blobObject);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'table_data.xlsx';
+    
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+</script>
+
+{% endblock %}

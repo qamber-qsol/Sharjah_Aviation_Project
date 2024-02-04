@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Hash Generator</title>
+</head>
+<body>
+    <h2>Password Hash Generator</h2>
+
+    {% if hashed_password %}
+        <div>
+            <p>The hashed password is: {{ hashed_password }}</p>
+        </div>
+    {% else %}
+        <form method="POST" action="/generate_hash">
+            <label for="password">Enter Password:</label>
+            <input type="password" name="password" required>
+            <button type="submit">Generate Hash</button>
+        </form>
+    {% endif %}
+</body>
+</html>

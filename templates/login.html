@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="icon" href="static/images/myfavicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}">
+    <title>Login Page</title>
+    <style>
+      a{
+        color: #3F51B5;
+    font-size: 0.9em;
+
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="login-title">Log in</h2>
+      <!-- Flash messages section -->
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}  
+      <div class="alert alert-info">
+        <ul class="errorMessage">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% endwith %}
+      <form class="login_form" role="form" method="post" action="/login" id="login_form">
+        
+
+        <div>
+          <label for="email">Email </label>
+          <input id="username" type="text" placeholder="me@example.com" name="username" required/>
+        </div>
+  
+        <div>
+          <label for="password">Password </label>
+          <input
+                 id="password"
+                 type="password"
+                 placeholder="password"
+                 name="password"
+                 required
+                 />
+        </div>
+        <div>
+          
+        </div>
+        <!-- <input type="submit" value="Sign In" id="admin_login_submit"> -->
+        <button class="btn btn--form" type="submit" value="Log in">
+          Log in
+        </button>
+      </form>
+  </div>
+    
+    
+</body>
+
+</html>

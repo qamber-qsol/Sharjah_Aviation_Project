@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+<style>
+  .table {
+       border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .table td,
+  .table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  table.table tbody tr.selected {
+    background-color: #f5f4f4;
+  }
+  
+  .table tr:hover {
+    background-color: #e9e9e9 !important;
+  }
+  
+  .table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background: #784391;
+  
+    color: white;
+  }
+  
+
+</style>
+
+{% endblock %}
+
+{% block user_page %}
+<div class="loader-wrapper">
+  <div class="loader"></div>
+</div>
+<div class="my-3 p-3 w-100 bg-white">
+  <table class="table">
+    <thead>
+        <tr>
+            <th>
+                <input type="checkbox" class="checkAll" name="checkAll" />
+            </th>
+            <th>ID</th>
+            <th>Social</th>
+            <th>Created By</th>
+            <th>Created at</th>
+            <th>Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><input type="checkbox" name="item[]" value="1"></td>
+        <td>11</td>
+        <td><i class="bg-tbc fa fa-facebook p-2 rounded text-white"></i></td>
+        <td>Muffadil</td>
+        <td>2023-25-11</td>
+        <td>
+          <button class="border btn"><i class="fa fa-check-circle text-center text-success"></i></button> 
+          <button class="border btn text-danger"><i class="fa fa-cancel text-center"></i></button>
+          <button class="border btn"><i class="fa fa-eye text-center text-primary"></i></button>
+        </td>
+      </tr>
+        <tr>
+          <td><input type="checkbox" name="item[]" value="2"></td>
+          <td>11</td>
+          <td><i class="bg-tbc fa fa-facebook p-2 rounded text-white"></i></td>
+          <td>Ali</td>
+          <td>2023-25-11</td>
+          <td>
+            <button class="border btn"><i class="fa fa-check-circle text-center text-success"></i></button> 
+            <button class="border btn text-danger"><i class="fa fa-cancel text-center"></i></button>
+            <button class="border btn"><i class="fa fa-eye text-center text-primary"></i></button>
+          </td>
+        </tr>
+      <tr>
+        <td><input type="checkbox" name="item[]" value="3"></td>
+        <td>11</td>
+        <td><i class="bg-tbc fa fa-facebook p-2 rounded text-white"></i></td>
+        <td>Zaidi</td>
+        <td>2023-25-11</td>
+        <td>
+          <button class="border btn"><i class="fa fa-check-circle text-center text-success"></i></button> 
+          <button class="border btn text-danger"><i class="fa fa-cancel text-center"></i></button>
+          <button class="border btn"><i class="fa fa-eye text-center text-primary"></i></button>
+        </td>
+      </tr>
+    <tr>      
+      <td><input type="checkbox" name="item[]" value="1"></td>
+      <td>11</td>
+      <td><i class="bg-tbc fa fa-linkedin p-2 rounded text-white"></i></td>
+      <td>Muffadil</td>
+      <td>2023-25-11</td>
+      <td>
+        <button class="border btn"><i class="fa fa-check-circle text-center text-success"></i></button> 
+        <button class="border btn text-danger"><i class="fa fa-cancel text-center"></i></button>
+        <button class="border btn"><i class="fa fa-eye text-center text-primary"></i></button>
+      </td>
+    </tr>
+    <tr>
+      <td><input type="checkbox" name="item[]" value="4"></td>
+      <td>11</td>
+      <td><i class="bg-tbc fa fa-instagram p-2 rounded text-white"></i></td>
+      <td>Muhammad</td>
+      <td>2023-25-11</td>
+      <td>
+        <button class="border btn"><i class="fa fa-check-circle text-center text-success"></i></button> 
+        <button class="border btn text-danger"><i class="fa fa-cancel text-center"></i></button>
+        <button class="border btn"><i class="fa fa-eye text-center text-primary"></i></button>
+      </td>
+    </tr>
+
+    </tbody>
+</table>
+  
+</div>
+ 
+{% endblock %}
+{% block javascript %}
+<script>
+  $(document).ready(function() {
+    $(".checkAll").on("click", function() {
+      $(this)
+        .closest("table")
+        .find("tbody :checkbox")
+        .prop("checked", this.checked)
+        .closest("tr")
+        .toggleClass("selected", this.checked);
+    });
+  
+    $("tbody :checkbox").on("click", function() {
+      // toggle selected class to the checkbox in a row
+      $(this)
+        .closest("tr")
+        .toggleClass("selected", this.checked);
+  
+      // add selected class on check all
+      $(this).closest("table")
+        .find(".checkAll")
+        .prop("checked",
+          $(this)
+            .closest("table")
+            .find("tbody :checkbox:checked").length ==
+            $(this)
+              .closest("table")
+              .find("tbody :checkbox").length
+        );
+    });
+  });
+  
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/smm_main.js') }}"></script>
+{% endblock %}

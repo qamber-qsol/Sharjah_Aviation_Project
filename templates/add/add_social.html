@@ -1,0 +1,362 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style_view.css') }}">
+<style>
+  
+  .logoimagecanvas{    border-radius: 100%;
+    width: 77px;}
+  
+  .panel-wrap1{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 60em;
+    z-index: 14000;
+    transform: translateX(100%);
+    transition: .3s ease-out;
+  }
+  .panel-wrap2{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 78em;
+    z-index: 14000;
+    transform: translateX(100%);
+    transition: .3s ease-out;
+    }
+  .panel-visible {
+    transform: translateX(0%);	
+  }
+  .AIpanel-visible {
+    transform: translateX(0%);	
+  }
+  
+  .panelArea{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: #eee;
+    overflow: auto;
+    padding: 1em;
+  }
+  .PostPanel{
+    background: #f5f5f5;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+  }
+  .OnlineMedia{
+    background: #f5f5f5;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;}
+  .aisidepanel{
+    background: #229292!important;
+  }
+  
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+  #web_url,#titleSchedule,#mydate{
+  font-size: 14px;
+  font-weight: 100;
+  border-radius: 7px;
+  padding: 1.6em 1em;
+  color: #5a5555;
+  
+  }
+  
+  .file-upload .file-select .file-select-button {
+    background: #99578f;
+    padding: 0 10px;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    color: white;
+    border-radius: 5px;
+}
+.container-color {
+  display: flex;
+    align-items: center;
+    font-size: 1rem;
+    border-radius: 10px;
+    background: white;
+    color: #848282;
+}
+
+input[type="color"] {
+  border: none;
+  background-color: transparent;
+  width: 60px;
+  height: 60px;
+  outline: none;
+}
+
+#color-picker::-webkit-color-swatch {
+border-radius: 7%;
+}
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the select element
+    var selectElement = document.getElementById('client_connect');
+
+    // Set the value to be selected using Jinja variable
+    var valueToSelect = '{{ value_to_select }}';
+
+    // Loop through the options and set the selected attribute
+    for (var i = 0; i < selectElement.options.length; i++) {
+      if (selectElement.options[i].value === valueToSelect) {
+        selectElement.options[i].selected = true;
+        break;
+      }
+    }
+  });
+</script>
+{% endblock %}
+
+{% block user_page %}
+<div class="loader-wrapper">
+  <div class="loader"></div>
+  </div>
+<div class="demoWrapper wrappervisible"></div>
+<div>
+<div class="p-3 w-100">
+  <div class="row ">
+    <div class="col m-0 md-6 p-3">
+      <p class="h3 px-3">Select Social Group</p>
+    </div>
+    <div class="col md-6">
+      <div class="d-flex my-3">
+        <select class="form-control selectpicker" id="client_connect" name="page_select" required>
+            <option value="">None</option>
+            {% for i in client %}
+              <option value="{{ i[0] }}">{{ i[1] }}</option>  
+            {% endfor %}    
+          </select>
+          <button class="btn btn-outline-dark mx-2 w-auto"  id="create_client"><li class="fa fa-plus"></li></button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="border">
+    <div class="m-0 row text-center w-100">
+    <div class="col-md-2 p-3">
+       <div class="border border-right p-4 shadow bg-white  ">
+        <a href="#" class="bg-tbc fa fa-2x fa-facebook p-2 px-3 rounded-circle text-decoration-none text-white"></a>
+        <h3 class="h4 my-3">Facebook </h3><h3 class="h4 my-3">Group/Page</h3>
+        {% block link %}        
+        <button class="btn btn-dark w-100" type="submit" name="{{ fb_link }}" id="fb_connect">Connect</button> 
+        {% endblock %}        
+    
+        
+    </div>
+</div>   
+    
+    <div class="col-md-2 p-3">
+        <div class="border border-right p-4 shadow bg-white">
+          <a href="#" class="fa fa-2x fa-instagram p-2 rounded-circle text-decoration-none text-white" aria-hidden="true" style="background: radial-gradient(circle at 33% 100%, #fed373 4%, #f15245 30%, #d92e7f 62%, #9b36b7 85%, #515ecf);"></a>
+        <h3 class="h4 my-3">Instagram</h3>
+        <h3 class="h4 my-3">Bussiness</h3>        
+        {% block link2 %}        
+        <button class="btn btn-dark w-100" type="submit" name="{{ ig_link }}" id="ig_connect">Connect</button>
+        {% endblock %}
+     
+        </div>
+    </div>
+    <div class="col-md-2 p-3">
+        <div class="border border-right p-4 shadow bg-white">
+          <a href="#" class="bg-dark fa fa-2x fa-brands fa-x-twitter p-2 rounded-circle text-decoration-none text-light" aria-hidden="true"></a>
+        <h3 class="h4 my-3">Twitter</h3><h3 class="h4 my-3">Profile</h3>  
+       
+        {% block link3 %}          
+        <button class="btn btn-primary w-100" type="submit" name="{{ tw_link }}" id="tw_connect">Connect</button> 
+        {% endblock %}
+        </div>
+    </div>
+    <div class="col-md-2 p-3">
+        <div class="border border-right p-4 shadow bg-white">
+          <a href="#" class="fa fa-2x fa-linkedin p-2 rounded-circle text-decoration-none text-light" style="background: #0072b1;" aria-hidden="true"></a>
+        <h3 class="h4 my-3">LinkedIn </h3>
+        <h3 class="h4 my-3">Profiles</h3>  
+       
+        {% block link4 %}        
+        <button class="btn btn-primary w-100" type="submit" name="{{ ld_link }}" id="lkd_connect">Connect</button>
+        {% endblock %}
+      
+        </div>
+    </div>
+    <div class="col-md-2 p-3">
+        <div class="border border-right p-4 shadow bg-white">
+        <a href="#" class="fa fa-2x fa-linkedin p-2 rounded-circle text-decoration-none text-light" style="background: #0072b1;" aria-hidden="true"></a>
+        <h3 class="h4 my-3">LinkedIn </h3><h3 class="h4 my-3">Pages</h3>
+                
+        {% block link5 %} 
+        <button class="btn btn-primary w-100" type="submit" name="{{ ld_page_url }}" id="lkd_page_connect">Connect</button>        
+        {% endblock %}
+    
+        </div>
+    </div>
+    <div class="col-md-2 p-3">
+      <div class="border border-right p-4 shadow bg-white">
+      <a href="#" class="fa fa-2x fa-3x fa-pinterest text-decoration-none" style="color: red;" aria-hidden="true"></a>
+      <h3 class="h4 my-3">Pinterest</h3><h3 class="h4 my-3">Boards</h3>
+              
+      {% block link6 %} 
+      <button class="btn btn-primary w-100" type="submit" name="{{ pinterest_url }}" id="pinterest_connect">Connect</button>        
+      {% endblock %}
+  
+      </div>
+  </div>
+    </div>
+  </div>
+   
+    <div class="panel-wrap1">
+      <div class="panelArea PostPanel">
+        <div class="PostHeader align-items-center border-bottom fixed-top justify-content-between m-0 pl-4 pt-2 row my-3" style="color: #99578F;background: #f5f5f5;border-top-left-radius: 35px;">
+          <div class="h4 px-3">Create Social Brand</div>
+          <div><button id="CloseWrapper" class="CloseWrapper bg-transparent border-0 btn btn-sm p-0 shadow-none"><i class="fa fa-close p-3 rounded-circle text-muted" style="font-size: 1.4em;" aria-hidden="true"></i></button></div>
+        </div>
+        <div class="tab-content" id="ex2-content" style="margin: 4em 0em 0em 0em;">
+        <div class="tab-pane fade show active fadeInLeft" id="postsection" role="tabpanel" aria-labelledby="ex3-tab-1">
+          <div class="mainPosting" >
+            
+            <div class="m-0 text-body w-100">
+              
+              <div class="sections_1">
+              <form class="fb_post_form  fb_post_form pt-2 px-3"  id="fb_post_form">
+          
+              <input type="text" id="brand_name" placeholder="Enter Brand Title*" class="my-2 m-0 py-4 bg-white form-control shadow-none border" required>
+              <label class="my-2">Upload your logo*</label>    
+              <div class="d-flex my-1 my-2">
+                
+                <div class="col-10 file-upload py-3 px-0">
+                  <div class="file-select" style="border: none;background: none; ">
+                  <div class="file-select-button" id="fileName"><i class="fa fa-upload mr-2"></i>Upload Logo</div>
+                  <div class="file-select-name" id="noFile"></div> 
+                  <input type="file" name="chooseFile" id="chooseFile" accept=".jpg, .jpeg, .png, .gif, .bmp, .tiff, .mp4, .mov, .avi, .mkv, .wmv, .3gp, .flv" capture="">
+                  </div>
+                </div>
+                <div class="col-2"> 
+                  <div class="image_preview" id="image_Preview"></div>
+                </div>
+                </div>
+
+                <div class="container-color my-3">
+                  <input type="color" id="color-picker"/>
+                  <span class="px-3" id="value">#0072b1</span>
+                </div>
+
+                <label class="mb-2">Assign to *</label>
+                <select class="form-control selectpicker" id="brand_users" name="page_select" multiple>
+                  <option value="">None</option>
+                  {% for i in user_list %}
+                    <option value="{{ i[0] }}">{{ i[1] }}</option>  
+                  {% endfor %}    
+                </select>
+                 
+            </form> 
+            
+          
+            </div>
+              
+            </div>
+            
+      
+          </div>
+        </div>
+        
+        </div>
+        
+      </div>
+      <div class="UpdateElement d-flex px-3" style="position: absolute; bottom: 0; margin: 15px 0px; width: 101%;left: 18px;">
+        
+        <button type="button" onclick="add_brand()" class="bg-tbc btn m-0 my-2 py-2 rounded text-white" style="width: 95%;">Save Brand</button>
+      </div>
+    </div>
+
+{% endblock %}
+{% block javascript %}
+<script>
+  $(document).ready(function() {
+    var colorPicker = $("#color-picker");
+    var colorValue = $("#value");
+
+    colorPicker.change(function() {
+        colorValue.text(colorPicker.val());
+        colorValue.css("color", colorPicker.val());
+    });
+});
+  $("#create_client").click(function() {
+    
+    $(".panel-wrap1").toggleClass("panel-visible");
+    $('.demoWrapper').toggleClass("wrappervisible");
+  
+    $('.UpdateElement').show();
+    
+  });
+
+  $("#CloseWrapper").click(function() {
+		// Toggle the panel visibility
+		$(".panel-wrap1").toggleClass("panel-visible");
+		$('.demoWrapper').toggleClass("wrappervisible");
+		});
+
+  $('#chooseFile').bind('change', function () {
+    const filename = $("#chooseFile").val();
+  
+    if (/^\s*$/.test(filename)) {
+        $(".file-upload").removeClass('active');
+        $("#noFile").text("No file chosen...");
+    } else {
+        console.log("The file name", filename);
+  
+        const formData = new FormData();
+        formData.append('file_doc', $('#chooseFile')[0].files[0]);
+  
+        let baseUrl = new URL(window.location.href);
+        baseUrl = `${baseUrl.protocol}//${baseUrl.hostname}:${baseUrl.port}`;
+      
+        axios({
+            method: 'POST',
+            url: baseUrl + '/uploadFile',
+            data: formData
+        }).then(res => {
+            console.log(res.data);
+            const responseData = res.data;
+            const uploadFilename = responseData.filename;
+            console.log(uploadFilename);
+  
+            $(".file-upload").addClass('active');
+            $("#noFile").text(uploadFilename);
+  
+            // Create a new img tag
+            const imgTag = $('<img id="logoimagecanvas">');
+  
+            // Set the src attribute with a data URL
+            imgTag.addClass("logoimagecanvas")
+            imgTag.addClass("shadow-sm")
+            imgTag.ad
+            imgTag.attr('src',responseData.file_base64);
+  
+            // Append the img tag to the div with class "image_preview"
+            $('.image_preview').html(imgTag);
+            
+  
+        }).catch(err => {
+            console.error("Upload failed:", err);
+            alert("Upload failed!");
+            $(".file-upload").removeClass('active');
+            $("#noFile").text("No file chosen...");
+            
+        });
+    }
+  });
+
+	</script>
+  
+{% endblock %}

@@ -1,0 +1,178 @@
+
+{% extends "base.html" %}
+{% block stylesheets %}
+
+<script></script>
+<style>
+  table, tr, td ,th{
+    border-bottom: 2px solid rgba(10, 61, 97, 0.5)!important;
+  }
+  .table td, .table th{
+    vertical-align: middle;
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      var selectElement = document.getElementById('client_type');
+      var valueToSelect = '{{ value_to_select }}';
+
+      if (valueToSelect) {
+          selectElement.value = valueToSelect;
+          // Manually trigger the change event after setting the value
+          $(selectElement).trigger('change');
+      }
+  });
+</script>
+{% endblock %}
+
+{% block user_page %}
+<div class="loader-wrapper">
+  <div class="loader"></div>
+</div>
+<div class="bg-tbc h4 p-3 rounded row text-light w-100 m-0">
+<div class="col-lg-6 col-md-6 p-0 align-self-center">
+  View Conections
+</div>
+<div class="col-lg-6 col-md-6 p-0 align-self-center">
+  <label for="fb_pages" class="align-self-center col-auto m-0 pl-0">Select Client:</label>
+  <select class="form-control selectpicker my-2 " id="client_type" name="page_select" multiple>
+    {% for i in pages %}
+      <option value="{{ i[0] }}">{{ i[1] }}</option>  
+    {% endfor %}    
+  </select> 
+</div>
+</div>
+<!-- <div class="my-3 p-3 w-100 bg-white">
+  <div class="row w-100 m-0">
+    <div class="col-lg-6 col-md-6">
+      <label for="fb_pages">Select Client:</label>
+      <select class="form-control selectpicker my-2" id="client_type" name="page_select" multiple>
+        {% for i in pages %}
+          <option value="{{ i[0] }}">{{ i[1] }}</option>  
+        {% endfor %}    
+      </select> 
+    </div>
+    <div class="col-lg-6 col-md-6">
+      <label for="fb_pages">Select Social Media:</label>
+      <select class="form-control selectpicker my-2" id="social_type" name="page_select" multiple>
+        {% for i in socials %}
+          <option value="{{ i[0] }}">{{ i[0] }}</option>  
+        {% endfor %}    
+      </select>
+    </div>    
+  </div>
+  <div class="row w-100 m-0">  
+    <div class="col-lg-6"></div>
+    <div class="col-lg-6">
+      <button class="btn btn-dark float-lg-right my-2 px-5 w-25" onclick="generate_report()">Submit</button>
+    </div>
+  </div> -->
+  
+  <div class="report_section">
+  <table class="report_table table table-bordered table-hover table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Social Type</th>
+            <th>Social Name</th>
+            <th>Expire After</th>
+            <th></th>
+            
+            {% for i in my_data %}
+            <tr><td>{{ i[1] }}</td><td>{{ i[2] }}</td><td>{{ i[3] }}</td><td>{{ i[4] }}</td></tr>
+          {% endfor %}
+  </table>
+  </div> 
+  <!-- </div>-->
+<!-- <div class="jumbotron py-5">  
+  <div class="m-0 row text-center w-100">
+{% for i in connection_data %}
+
+<div class="col-md-3 p-2 fadein ConnectPanel">
+  <div class="mainPanel bg-light border border-right p-4 shadow" name="{{ i[4] }}">
+  <a href="#" class="fa fa-2x fa-{{i[1]}}" id="fa2"></a>
+  <h2 class="h5 my-2">{{ i[0] }} </h2>
+  <h3 class="h6 ">{{ i[2] }}</h3>
+  <h3 class="h6 text-danger">{{ i[3] }} Days Left </h3>
+  <div class="w-100">   
+    <button type="submit" id="fb_submit" class="btn btn-dark">Reconnect</button>
+    <button type="submit" class="btn btn-danger m-auto mx-1 w-25 deleteConnect"><i class="fa fa-bitbucket"></i></button>
+  </div>
+</div></div>
+
+{% endfor %}
+</div></div> -->
+
+{% endblock %}
+{% block javascript %}
+<script>
+  $(document).ready(function() {
+      // Event handler for the change event of the select element
+      $('#client_type').on('change', function() {
+          var $clientType = $('#client_type');
+          var clientIDs = $clientType.val();
+  
+          console.log('Selected values:', clientIDs);
+          
+          // Clear the existing table content
+          $('.report_section').html('');
+
+          if (clientIDs) {
+              // If a value is selected, fetch and display the table
+              myshowLoader();
+              
+              // Simulate a delay with setTimeout (you can adjust the delay)
+              setTimeout(function() {
+                  axios({
+                      method: 'POST',
+                      url: baseUrl + '/view_token',
+                      data: {
+                          client_IDs: clientIDs,
+                      }
+                  }).then(res => {
+                      var post_id = res.data;
+                      console.log(post_id);
+                      const tableHTML = `
+                          <table class="bg-light report_table table table-hover table-responsive-sm text-capitalize text-center">
+                              <thead>
+                                  <tr>
+                                      <th>ID</th>
+                                      <th>Social Type</th>
+                                      <th>Social Name</th>
+                                      <th>Expire After</th>
+                                      <th></th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  ${post_id.map(data => `
+                                      <tr>
+                                          <td>${data[0]}</td>
+                                          <td class="font-weight-bolder">${data[1]}</td>
+                                          <td><i class="fa fa-${data[2]}"></i></td>
+                                          <td class="text-danger">${data[3]}</td>
+                                          <td><button class="btn btn-danger w-100" onClick="DeleteConnect(this)">Delete</button></td>
+                                      </tr>
+                                  `).join('')}
+                              </tbody>
+                          </table>
+                      `;
+                      $('.report_section').html(tableHTML);
+                      myhideLoader();
+                  }).catch(err => {
+                      console.log(err);
+                      myhideLoader();
+                  });
+              }, 1500); // 1500 milliseconds = 1.5 seconds delay (adjust as needed)
+          }
+      });
+
+      // Set the selected value using Jinja variable
+      var valueToSelect = '{{ value_to_select }}';
+      console.log('Value to select:', valueToSelect);
+
+      if (valueToSelect) {
+          // Set the value and trigger the change event
+          $('#client_type').val(valueToSelect).trigger('change');
+      }
+  });
+</script>
+{% endblock %}

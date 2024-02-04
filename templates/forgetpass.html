@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="icon" href="static/images/myfavicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}">
+    <title>Forget Password</title>
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="login-title">Forget Password</h2>
+
+      <!-- Flash messages section -->
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}  
+      <div class="alert alert-info">
+        <ul class="demo">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      <form class="login_form" role="form" method="post" action="/forgetPassword" id="login_form">
+        <div>
+          <label for="email">Your Email</label>
+          <input id="username" type="email" placeholder="me@example.com" name="username" required="">
+        </div>
+        <button class="btn btn--form" type="submit" value="Log in">Reset Password</button>
+      </form>
+    </div>
+  </body>
+</html>

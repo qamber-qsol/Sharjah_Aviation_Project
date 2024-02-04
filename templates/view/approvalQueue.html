@@ -1,0 +1,989 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+<style>
+  .table {
+       border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .table td,
+  .table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  table.table tbody tr.selected {
+    background-color: #f5f4f4;
+  }
+  
+  .table tr:hover {
+    background-color: #e9e9e9 !important;
+  }
+  
+  .table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background: #784391;
+  
+    color: white;
+  }
+  .panel-wrap1{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 85em;
+    z-index: 14000;
+    transform: translateX(100%);
+    transition: .3s ease-out;
+  }
+  .panel-wrap2{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 78em;
+    z-index: 14000;
+    transform: translateX(100%);
+    transition: .3s ease-out;
+    }
+  .panel-visible {
+    transform: translateX(0%);	
+  }
+  .AIpanel-visible {
+    transform: translateX(0%);	
+  }
+  
+  .panelArea{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: #eee;
+    overflow: auto;
+    padding: 1em;
+  }
+  .PostPanel{
+    background: #f5f5f5;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+  }
+  .OnlineMedia{
+    background: #f5f5f5;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;}
+  .aisidepanel{
+    background: #229292!important;
+  }
+  
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+  #web_url,#titleSchedule,#mydate{
+  font-size: 14px;
+  font-weight: 100;
+  border-radius: 7px;
+  padding: 1.6em 1em;
+  color: #5a5555;
+  
+  }
+  
+
+</style>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+<link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style_ig.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='url_preview.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style_view.css') }}">
+<link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='imager.css') }}">
+<link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='testingchat.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dist/drawerJs.css') }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.5/marked.min.js" integrity="sha512-4jnDttU14uoo9NlKf2foGssydpsxUDtUj9sWhUqm1taDjQoBY30pgrSk2f9GS43SZELyTVvPODb03GlUPvd5SA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='dist/jquery-1.10.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='dist/jquery-migrate-1.2.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='dist/drawerJs.standalone.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='jquery.emojipicker.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='jquery.emojipicker.tw.css') }}">
+
+
+{% endblock %}
+
+{% block user_page %}
+<div class="loader-wrapper">
+  <div class="loader"></div>
+</div>
+<div class="container-fluid">
+  <!-- <div class="d-flex float-left mb-3"><button type="button" name="post" id="ApprovalAllPOST" class="bg-success btn m-0 mr-1  rounded text-white w-100">Approve</button><button type="button" name="post" id="DeclineAll" class="bg-danger btn m-0  py-2 rounded text-white w-100">Decline</button></div> -->
+  <table id="table" class="table table-striped table-hover table-bordered" style="width:100%">
+    <thead>
+      <tr>
+        <th><input type="checkbox" class="checkAll" name="checkAll" /></th>
+        <th>Id</th>
+        <th>Created By</th>
+        <th>Social</th>
+        <th>Created At</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="table_body"></tbody>
+  </table>
+
+
+
+</div>
+<div class="panel-wrap1">
+  <div class="panelArea PostPanel">
+    <div class="PostHeader align-items-center border-bottom fixed-top justify-content-between m-0 pl-4 pt-2 row" style="color: #99578F;background: #f5f5f5;border-top-left-radius: 35px;">
+      <div class="h4 px-3">Publish Content</div>
+      <div><button id="CloseWrapper" class="CloseWrapper bg-transparent border-0 btn btn-sm p-0 shadow-none"><i class="fa fa-close p-3 rounded-circle text-muted" style="font-size: 1.4em;" aria-hidden="true"></i></button></div>
+    </div>
+    <div class="tab-content" id="ex2-content" style="margin: 3.2em 0em 0em 0em;">
+    <div class="tab-pane fade show active fadeInLeft" id="postsection" role="tabpanel" aria-labelledby="ex3-tab-1">
+      <div class="mainPosting" >
+        
+        <div class="m-0 row text-body w-100">
+          
+          <div class="col-sm-12 col-md-6 sections_1">
+          <div class="align-items-baseline d-flex justify-content-between">
+            
+           
+          </div>	
+          <div>
+          <form class="fb_post_form  fb_post_form pt-2 px-3"  id="fb_post_form">
+          
+         
+          <div class="UpdateElement m-0">
+            <input type="text" id="NewtitleSchedule" placeholder="Title" class="m-0 bg-white form-control shadow-none border">
+            <div class="container p-0">
+              <div class="btn-group row w-100 my-2 mx-0" id="new_accounts">							
+              </div>
+            </div>
+          </div>
+          <div class="SelectCampaign">	
+          
+          </div>
+                  
+          <textarea @keyup="updateText" class=" fb_data w-100"  id="fb_data" rows="8" ></textarea>
+          <div class="d-flex my-2">
+
+          <div class="col-10 file-upload p-0">
+            <div class="file-select">
+            <div class="file-select-button" id="fileName">Choose File</div>
+            <div class="file-select-name" id="noFile">No file chosen...</div> 
+            <input type="file" name="chooseFile" id="chooseFile" accept=".jpg, .jpeg, .png, .gif, .bmp, .tiff, .mp4, .mov, .avi, .mkv, .wmv, .3gp, .flv" capture>
+            </div>
+          </div>
+          <div class="col-2 loader-small pt-2 px-4" id="loader-small-6" style="display: none;">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          </div>
+          <div class="fadeInLeft my-2 urlArea" style="display: none;">	
+            <input type="text" id="web_url" placeholder="Website link" class="m-0 bg-white form-control shadow-none border">
+          </div>
+          
+          <div class="canvas_card" style="display: none;"></div>
+    
+        <div class="UpdateElement m-0">
+          <input class="form-control m-0 my-2 form-control " type="datetime-local" name="birthdaytime" id="modifieddate" required>							
+        </div>       
+        </form> 
+        <div class="UpdateElement d-flex px-3">
+          <button type="button" name="post" id="UpdateSchedule" class="bg-success btn m-0 mr-1 my-2 py-2 rounded text-white w-100">Update &amp; Approve</button>
+          <button type="button" name="post" id="DeclineUser" class="bg-danger btn m-0 my-2 py-2 rounded text-white w-100">Decline</button>
+        </div>
+        </div>
+        </div>
+        <div class="border-left col-md-6 col-sm-12 mt-3 mt-md-0 sections_2">  
+          
+          <div class="container p-0" style="height: 500px;">
+          
+          <div class="container m-0 p-2 w-100">
+            <div class="m-0 p-3 row w-100">
+            <ul class="m-auto nav nav-pills" id="myTab" role="tablist">
+              <li class="nav-item mx-3">
+              <a class="nav-link rounded-circle active" id="home-tab" data-toggle="tab" href="#facebook" role="tab" aria-controls="home" aria-selected="false"><i class="fa fa-facebook"></i></a>
+              </li>
+              <li class="nav-item mx-3">
+              <a class="nav-link rounded-circle" id="profile-tab" data-toggle="tab" href="#Instagram" role="tab" aria-controls="profile" aria-selected="false"><i class="fa-brands fa-instagram"></i></a>
+              </li>
+              <li class="nav-item mx-3">
+              <a class="nav-link rounded-circle" id="contact-tab" data-toggle="tab" href="#linkedin" role="tab" aria-controls="contact" aria-selected="false"><i class="fa-brands fa-linkedin"></i></a>
+              </li>
+              <li class="nav-item mx-3">
+              <a class="nav-link rounded-circle" id="contact-tab" data-toggle="tab" href="#twitter" role="tab" aria-controls="contact" aria-selected="true"><i class="fa fa-brands fa-x-twitter"></i></a>
+              </li>
+              <li class="nav-item mx-3">
+              <a class="nav-link rounded-circle" id="contact-tab" data-toggle="tab" href="#pinterest" role="tab" aria-controls="contact" aria-selected="true"><i class="fa fa-pinterest"></i></a>
+              </li>
+            </ul>
+            </div>
+            <div class="bg-white border m-0 my-2 rounded row text-dark w-100" style="border-radius: 12px; ">
+              <div class="tab-content text-dark w-100" id="myTabContent">
+                <div class="tab-pane fade active show" id="facebook" role="tabpanel" aria-labelledby="home-tab">
+                <div class="w-100">
+                  <section class="mypost">
+                  
+                  <form action="#"> 
+                    <div class="mycontent">
+                    <img src="/static/images/user2.webp">
+                    <div class="details">
+                      <p class="m-0">{{uName}}</p>
+                      <p2>Facebook</p2>
+                    </div>
+                    </div>
+                    
+                    <div id="output-text" class="myfbview" placeholder="What's on your mind, CodeWithNepal?" spellcheck="false" readonly ><pre>${ text }</pre></div>
+                    <div class="image_preview" id="image_Preview"></div>
+                    <div class="url_preview">
+                    <span class="myclose">&times;</span>
+                    <div class="img_section">
+                    <img class="icon" id="icon" src="" alt="Website Icon" loading="lazy">
+                    </div>
+                      <h2 class="title" id="title"></h2>
+                      <h6 class="description" id="description"></h6>
+                    </div>
+                  </form>
+                  <div class="d-flex text-center fbutton justify-content-between px-4 h-100">
+                    
+                    <div class="sub"><img src="/static/images/like.webp" loading="lazy">Like</div>
+                    <div class="sub"><img src="/static/images/comment.webp" loading="lazy">Comment</div>
+                    <div class="sub"><img src="/static/images/share.webp" loading="lazy">Share</div>
+                  </div>
+                  </section>
+                
+                </div>
+                </div>
+                <div class="tab-pane fade" id="Instagram" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="mw-100">
+                  <section class="mypost">
+                  <form action="#">
+                    <div class="mycontent">
+                    <img src="/static/images/logo-ig.webp" loading="lazy">
+                    <div class="details">
+                      <p>{{uName}}</p>
+                      <p2>Instagram</p2>
+                    </div>
+                    </div>
+                    
+                    <div id="imageContainer">
+                    <img id="imageTag" class="w-100" src="" alt="Image" loading="lazy">
+                    </div>
+                    <div class="image_preview"></div>
+                    
+                    
+                  </form>
+                  <div class="d-flex">
+                    <div class="sub">
+                      <img src="/static/images/heart.webp" class="mx-2" loading="lazy">
+                      <img src="/static/images/chat.webp" class="mx-2" loading="lazy">
+                      <img src="/static/images/send.webp" class="mx-2" loading="lazy">
+                    </div>
+                    <div class="sub2">
+                      <img src="/static/images/save-instagram.webp" class="mx-2">
+                    </div>
+                  </div>
+            
+                  <div class="mx-3 my-2">
+                    <p3 class="ig">0 likes</p3><br>
+                    <p3 class="ig">qsolutions</p3><br>
+                    <p4 class="ig" id="ig">${ text }</p4>
+                  </div>
+                    
+                  
+                  </section>       
+                  </div>  
+                </div>
+                <div class="tab-pane fade" id="linkedin" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="w-100">
+                  <section class="mypost">
+                  
+                  <form action="#">
+                    <div class="mycontent">
+                    <img src="/static/images/lkd_logo.webp" loading="lazy">
+                    <div class="details">
+                      <p class="m-0">{{uName}}</p>
+                      <p2>LinkedIn</p2>
+                    </div>
+                    </div>
+                    
+                    <div id="ld-output-text" class="myfbview" placeholder="What's on your mind, CodeWithNepal?" spellcheck="false" readonly ><pre>${ text }</pre></div>
+                    <div class="image_preview"></div>  
+                    <div class="url_preview">
+                      <span class="myclose">&times;</span>
+                      <div class="img_section">
+                      <img id="icon" class="icon" src="" alt="Website Icon" loading="lazy">
+                    </div>
+                      <h2 id="title" class="title"></h2>
+                      <h6 id="description" class="description"></h6>
+                    </div>
+                  </form>
+                  <div class="d-flex fbutton h-100 justify-content-around text-center">
+                    
+                    <div class="sub"><img src="/static/images/lkd_like.webp" loading="lazy">Like</div>
+                    <div class="sub"><img src="/static/images/ld_comment.webp" loading="lazy">Comment</div>
+                    <div class="sub"><img src="/static/images/ld_share.webp" loading="lazy">Share</div>
+                    <div class="sub"><img src="/static/images/ld_upload.webp" loading="lazy">Send</div>
+                  </div>
+                  </section>
+                
+                </div>
+                </div>
+                <div class="tab-pane fade" id="twitter" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="mw-100">
+                  <section class="mypost">
+                  
+                  <form action="#">
+                    <div class="mycontent">
+                    <i class="bg-dark fa fa-brands fa-x-twitter mb-3 p-2 rounded-circle text-light"></i>
+                    <div class="details">
+                      <p class="m-0">{{uName}}</p>
+                      <p2>Twitter</p2>
+                    </div>
+                    </div>
+                    
+                    <div id="tw-output-text" class="myfbview" placeholder="What's on your mind, CodeWithNepal?" spellcheck="false" readonly ><pre>${ text }</pre></div>
+                      <div class="url_preview">
+                        <span class="myclose">&times;</span>
+                        <div class="img_section">
+                        <img id="icon" class="icon" src="" alt="Website Icon" loading="lazy">
+                      </div>
+                        <h2 class="title" id="title"></h2>
+                        <h6 class="description" id="description"></h6>
+                      </div>
+                  </form>
+                  <div class="d-flex fbutton justify-content-between px-4 h-100 text-center">
+                    
+                    <div class="sub"><img src="/static/images/tw_comment.webp" loading="lazy"></div>
+                    <div class="sub"><img src="/static/images/tw_share.webp" loading="lazy"></div>
+                    <div class="sub"><img src="/static/images/tw_like.webp" loading="lazy"></div>
+                    <div class="sub"><img src="/static/images/tw_upload.webp" loading="lazy"></div>
+                  </div>
+                  </section>
+                
+                </div>
+                </div>
+                <div class="tab-pane fade" id="pinterest" role="tabpanel" aria-labelledby="home-tab">
+                  <section class="d-flex justify-content-center mypost">
+                  <div class="MainPintUi">
+                    <div class="pImageDiv">
+                    <div class="ImageSec p-2">
+                      <div class="ImageArea mt-3">
+                      <img id="ImagePinterest" class="ImagePinterest" src="/static/assets/pt_background.png">
+                      </div>
+                      <div class="ButtonsArea">
+                      <div class="firstTag">
+                        <div class="mx-2"><i class=" border border-secondary fa fa-check fa-solid p-2" aria-hidden="true"></i></div>
+                        <div class="mr-2"><i class=" border border-secondary fa fa-pencil p-2" aria-hidden="true"></i></div>
+                      </div>
+                      <div class="SecondTag mr-3 mr-4">
+                        <div class="align-items-center border border-secondary btn btn-danger btn-sm d-flex rounded text-white"><i class="fa fa-lg fa-tag p-2"></i><div class="px-2">Save</div>
+                        </div>
+      
+                      </div>
+                      </div>
+                    </div>
+                    </div>
+                    <div class="p-2 pContentDiv">
+                    <div id="ld-output-text" class="myfbview pinteresTextArea" placeholder="What's on your mind, CodeWithNepal?" spellcheck="false" readonly >${ text }</div>
+                    <div class="my-2 mycontent" style="display: flex;align-items: center;">
+                      <img src="/static/images/pt_logo.webp" loading="lazy" style="max-width: 37px;">
+                      <div class="details mx-1" style=" font-size: 0.8em;">
+                      <p class="m-0">{{uName}}</p>
+                      <p2 class="m-0">Pinterest</p2>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  </section>
+                </div>
+      
+              </div>
+            </div>
+            </div>
+          
+          
+          </div>
+          
+        </div>  
+        </div>
+        
+  
+      </div>
+    </div>
+    
+    </div>
+  </div>
+</div>
+<div class="panel-wrap2">
+<div class="panelArea OnlineMedia shadow border">
+  <div class="PostHeader align-items-center border-bottom fixed-top justify-content-between m-0 pl-4 pt-2 row" style="color: #99578F;background: #f5f5f5;border-top-left-radius: 35px;">
+    <div class="h4 px-3">Online Media</div>
+    <div><button id="CloseWrapper2" class="CloseWrapper bg-transparent border-0 btn btn-sm p-0 shadow-none"><i class="fa fa-close p-3 rounded-circle text-muted" style="font-size: 1.4em;" aria-hidden="true"></i></button></div>
+  </div>
+  <div class="mainPosting" style="margin: 3.2em 0em 0em 0em;">
+    <div class="tab-pane fade fadeInLeft" id="editsection" role="tabpanel" aria-labelledby="ex3-tab-2">
+      <div class=" minecontainer-2 text-body my-2 w-100">
+        <div class="row">
+        <div class="col col-md-6 p-1">
+          <!-- <button class="btn btn-primary mx-3 px-5 py-1" onclick="backtoposting()"><i class="fa fa-2x fa-arrow-circle-left text-light" style="width: 27px;"></i></button> -->
+        </div>
+        <div class="col col-md-6 p-2 w-100">
+        
+        <button type="button" id="editdone" class="btn btn-dark float-right mx-3 w-25" onclick="onSaveImage_allSocial()">Done</button>
+        <button type="button" class="btn btn-primary float-right mx-3 w-25" onclick="onSave()">Save</button>
+        <button type="button" class="btn btn-primary float-right mx-3 w-25" onclick="onLoad()">Load</button>
+        </div>
+      </div>
+      </div>
+        <div class="minecontainer text-body w-100">
+        <div class="m-0 p-0 row">
+          
+      
+          <div class="border-right col col-md-3 p-2">
+            <div id="accordion">
+              <div class="card">
+                <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Online Search
+                  </button>
+                </h5>
+                </div>
+              
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                  <label class="h6 my-2">Select platfrom</label>   
+                  <div class="container m-0 my-3 row w-100">
+                    
+                    <div class="col-3 selector-item">
+                      <input type="radio" id="radio1" name="platfrom" class="selector-item_radio" value="google" checked>
+                      <label for="radio1" class="selector-item_label"><img class="p_logo" src="/static/images/google.webp" loading="lazy"></label>
+                    </div>
+                    <div class="col-3 selector-item">
+                      <input type="radio" id="radio2" name="platfrom" class="selector-item_radio" value="unsplash">
+                      <label for="radio2" class="selector-item_label"><img class="p_logo" src="/static/images/unsplash.webp" loading="lazy"></label>
+                    </div>
+                    
+                    <div class="col-3 selector-item">
+                      <input type="radio" id="radio3" name="platfrom" class="selector-item_radio" value="pixebay">
+                      <label for="radio3" class="selector-item_label"><img class="p_logo" src="/static/images/pixebay.webp" loading="lazy"></label>
+                    </div>
+                    <div class="col-3 selector-item">
+                      <input type="radio" id="radio4" name="platfrom" class="selector-item_radio" value="pixels">
+                      <label for="radio4" class="selector-item_label"><img class="p_logo" src="/static/images/pixels.webp" loading="lazy"></label>
+                    </div>
+                  </div>
+                  <input id="searchInput" class="col form-control mr-sm-2 my-1 w-100" type="search" placeholder="Search Image" aria-label="Search">
+                  
+                    <button type="submit" class="align-items-center btn btn-outline-dark d-flex justify-content-center mb-2 w-100 my-2" type="submit" id="btn_image_search"><span class="pr-4">Search</span>
+                    <div class="spinner-border" role="status" style="display: none; width: 1rem; height: 1rem;">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </button>
+                                              
+                  <div class="container p-0 my-4">
+                    <div style="display: flex; flex-wrap: wrap;" id="imager">
+                    </div>
+                  </div>
+      
+                </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Frames
+                  </button>
+                </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                  <div class="container p-0 my-4">
+                    <div style="display: flex; flex-wrap: wrap;" id="imager">
+                      <div class="p-1">
+                      <label class="radio_label">
+                      <input type="radio" name="myframe" value="frame_1">
+                      <img src="/static/images/frame.png" class="display_image" loading="lazy">
+                      </label>
+                      </div>
+                      <div class="p-1">
+                      <label class="radio_label">
+                      <input type="radio" name="myframe" value="frame_2">
+                      <img src="/static/images/pngwing.png" class="display_image" loading="lazy">
+                      </label>
+                      </div>
+                      
+                    </div>
+                    <button class="btn btn-dark my-1 px-4 w-100" type="submit" id="btn_add_frame" onclick="insertFrame()">Add frame</button>
+                  </div>
+                </div>
+                </div>
+              </div>
+              </div> 
+            
+          </div>      
+              
+          
+          <div class="col col-md-9">
+            <div class="row">
+            <div class="col p-2">
+            
+              <div class="radio_container">
+                <input type="radio" name="radio" class="aspect_radio" id="one" value="540x540" checked>
+                <label for="one" class="aspect_label">Ratio(1:1)</label>
+                <input type="radio" name="radio" class="aspect_radio" id="two" value="640x480">
+                <label for="two" class="aspect_label">Ratio(16:9)</label>
+                <input type="radio" name="radio" class="aspect_radio" id="three" value="854x480">
+                <label for="three"class="aspect_label">Ratio(4:3)</label>
+                <input type="radio" name="radio" class="aspect_radio" id="four" value="812x427">
+                <label for="four"class="aspect_label">Ratio(1.9:1)</label>
+              </div>
+            
+            </div>
+          </div>
+          <div class="row">
+          <div class="col p-2" id="canvasarea">
+            <div id="canvas-editor"></div>
+            <div id="newinstance"></div>
+          </div>
+          </div>
+      
+      
+          </div>
+        </div>
+        </div>    
+    </div>
+  </div>
+  
+</div>
+</div>
+  <div id="ai_side_panel" class="ai_side_panel">
+
+  <div class="mainChater">
+    <div class="headerDet border-bottom">
+      <div class="chatDety">
+
+        <div class="nameC">
+          <p class="roomTitle m-2" id="titleFirst">AI Content</p>    
+        </div>
+      </div>
+  
+      <div class="tools">
+        <button id="ai_side_close" tooltip="Room Settings" flow="left" class="btn"><i class="fa fa-times"></i></button>
+      </div>
+    </div>
+  
+    <div class="blackout"></div>
+  
+    <div class="changeW chatArea px-3">
+      <div class="chatMessages mx-2">
+      <!--Start of Chat cont-->
+      <div class="welcomeMess">
+        <div class="mb-2"><svg width="51" height="51" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_278_2618)" style="
+            color: #af0000;
+          ">
+          <path d="M3.27516 27.1595C1.31186 27.7204 0 29.49 0 31.4766V37.4531C0 39.5001 1.37959 41.2313 3.25822 41.7652C3.14566 41.041 3.08789 40.3 3.08789 39.5449C3.08789 28.6064 3.07982 29.2701 3.10781 28.7303C3.13471 28.1984 3.19148 27.6745 3.27516 27.1595Z" fill="#A8A8A8" style="
+            color: #00b5b5;
+          "></path>
+          <path d="M47.7239 27.1595C47.8484 27.9235 47.9121 28.7004 47.9121 29.4844V39.5449C47.9121 40.3 47.8544 41.041 47.7418 41.7652C49.6204 41.2313 51 39.5001 51 37.4531V31.4766C51 29.4236 49.6115 27.6874 47.7239 27.1595Z" fill="#A8A8A8"></path>
+          <path d="M44.5254 26.9941H28.052L23.0217 29.5093C22.4031 29.8191 21.7099 29.9824 21.0176 29.9824C20.1848 29.9824 19.369 29.7513 18.6608 29.313C17.33 28.4903 16.5352 27.0649 16.5352 25.5V18.0731C10.6831 18.5791 6.07617 23.5038 6.07617 29.4844V39.5449C6.07617 45.8611 11.215 51 17.5312 51H33.4688C39.785 51 44.9238 45.8611 44.9238 39.5449V29.4844C44.9238 28.6397 44.8312 27.804 44.6499 26.9921C44.6081 26.9941 44.5672 26.9941 44.5254 26.9941ZM19.5234 34.4648C19.5234 35.29 18.8545 35.959 18.0293 35.959C17.2041 35.959 16.5352 35.29 16.5352 34.4648V31.4766C16.5352 30.6514 17.2041 29.9824 18.0293 29.9824C18.8545 29.9824 19.5234 30.6514 19.5234 31.4766V34.4648ZM28.4883 41.9355H22.5117C21.6866 41.9355 21.0176 41.2666 21.0176 40.4414C21.0176 39.6162 21.6866 38.9473 22.5117 38.9473H28.4883C29.3134 38.9473 29.9824 39.6162 29.9824 40.4414C29.9824 41.2666 29.3134 41.9355 28.4883 41.9355ZM34.4648 34.4648C34.4648 35.29 33.7959 35.959 32.9707 35.959C32.1455 35.959 31.4766 35.29 31.4766 34.4648V31.4766C31.4766 30.6514 32.1455 29.9824 32.9707 29.9824C33.7959 29.9824 34.4648 30.6514 34.4648 31.4766V34.4648Z" fill="#A8A8A8"></path>
+          <path d="M6.07617 17.7723C7.81535 17.1557 9.06445 15.4942 9.06445 13.5469C9.06445 11.0756 7.05334 9.06445 4.58203 9.06445C2.11072 9.06445 0.0996094 11.0756 0.0996094 13.5469C0.0996094 15.4942 1.34871 17.1557 3.08789 17.7723C3.08789 20.5215 3.08789 22.5725 3.08689 24.1055L4.26727 23.7678C4.73443 22.69 5.33807 21.6571 6.07617 20.6968V17.7723Z" fill="#A8A8A8"></path>
+          <path d="M44.5254 0H25.998C22.4279 0 19.5234 2.90451 19.5234 6.47461V25.5C19.5234 26.0178 19.7916 26.4987 20.2321 26.771C20.472 26.9193 20.7444 26.9941 21.0177 26.9941C21.246 26.9941 21.475 26.9418 21.6859 26.8364L27.3469 24.0059H44.5254C48.0955 24.0059 51 21.1013 51 17.5312V6.47461C51 2.90451 48.0955 0 44.5254 0ZM43.4297 16.5352H27.0938C26.2686 16.5352 25.5996 15.8662 25.5996 15.041C25.5996 14.2159 26.2686 13.5469 27.0938 13.5469H43.4297C44.2549 13.5469 44.9238 14.2159 44.9238 15.041C44.9238 15.8662 44.2549 16.5352 43.4297 16.5352ZM43.4297 10.5586H27.0938C26.2686 10.5586 25.5996 9.88962 25.5996 9.06445C25.5996 8.23929 26.2686 7.57031 27.0938 7.57031H43.4297C44.2549 7.57031 44.9238 8.23929 44.9238 9.06445C44.9238 9.88962 44.2549 10.5586 43.4297 10.5586Z" fill="#A8A8A8"></path>
+          </g>
+          <defs>
+          <clipPath id="clip0_278_2618">
+          <rect width="51" height="51" fill="white"></rect>
+          </clipPath>
+          </defs>
+          </svg></div>
+        <h1 class="roomTitle">Welcome To AI Generator</h1>
+      </div>
+      
+      </div>
+      <div id="content_loader">
+      <!-- Display gif -->
+      <img src="{{ url_for('static', filename='images') }}/typing1.gif" alt="">
+      </div>
+      
+      <div class="messageBox">
+      <div class="textA"><textarea id="message" name="message" rows="1" cols="30" placeholder="Ask me anything...." class="border shadow-none"></textarea></div>
+      <button id="send" class="border button-s1 m-0 shadow-none" tooltip="Send" flow="left" style="background: #c0c0c0;"><i class="fa fa-3 fa-arrow-up-from-bracket" aria-hidden="true"></i></button>
+    </div>
+    </div>
+  </div>
+  
+  </div>
+ 
+{% endblock %}
+{% block javascript %}
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+<script>
+
+  function updateButtonState() {
+     
+    // Check if at least one checkbox is checked
+    if ($('input[type="checkbox"]:checked').length > 0) {
+      console.log("test2");
+
+      $('#allApprovedbtn').prop("disabled", false);
+      $('#allDeclinebtn').prop("disabled", false);
+
+    } else {
+      $('#allApprovedbtn').prop("disabled", true);
+      $('#allDeclinebtn').prop("disabled", true);
+    }
+  }
+  $(document).ready(function() {
+    $('#table').DataTable({
+      dom: 'Bfrtip',     
+      buttons: [
+          {   
+              
+              className:'fa fa-check-circle btn bg-success rounded text-white mb-3',
+              attr: {
+                
+                id: 'allApprovedbtn'
+              },
+              
+              action: function ( e, dt, node, config ) {
+                var allPostIds = $('input[name="item"]:checked').map(function() {
+                  return this.value;
+                }).get();       
+                myshowLoader();
+                axios({
+                    method: 'POST',
+                    url: baseUrl + '/PostApprove/approveQueue',
+                    data: {
+                        requestId: allPostIds,
+                    }
+                }).then(res => {
+                    myhideLoader();
+                    showToastMessage('success','Post : Approved!')
+                    location.reload(true)
+                    console.log("Post Successfully!");
+
+                }).catch(err => {
+                    myhideLoader();
+                    showToastMessage('error','Post :Unable to Approved!')
+                    console.log(err);
+                });
+
+
+              }
+          },
+          {
+            
+            className:'fa fa-cancel btn bg-danger rounded text-white mb-3',
+            attr: {
+              
+              id: 'allDeclinebtn'
+            },
+ 
+            action: function ( e, dt, node, config ) {
+
+              var allPostIds = $('input[name="item"]:checked').map(function() {
+                return this.value;
+              }).get();       
+              console.log(allPostIds);
+              let confirmation = window.confirm('Do you want to declined this post?');
+        
+              if (confirmation) 
+              {
+              myshowLoader();
+              axios({
+                  method: 'DELETE',
+                  url: baseUrl + '/PostApprove/approveQueue',
+                  data: {
+                      requestId:allPostIds,
+                  }
+              }).then(res => {
+                  myhideLoader()
+                  location.reload(true)
+
+              }).catch(err =>{
+                  myhideLoader();
+                  showToastMessage('error','Post :Unable to Decline!')
+                  console.log(err);
+              }); 
+            }
+            else {showToastMessage('success','The Post will not be declined.');}
+
+
+            }
+          }
+        ],
+        "order": [], 
+        "pageLength": 10,
+        "search": {
+            "caseInsensitive": true
+        },
+
+        columnDefs: [
+            {targets: 'no-sort', orderable: false}
+        ]
+    });
+    
+    //function init_dt(){
+      /*$('#tabla').DataTable({        
+          "order": [], 
+          "pageLength": 10,
+          "search": {
+              "caseInsensitive": true
+          },
+
+          columnDefs: [
+              {targets: 'no-sort', orderable: false}
+          ]
+      });*/
+    //}
+    
+    function load_data_datatable() {
+      let baseUrl = new URL(window.location.href);
+      myshowLoader();
+      $.ajax({
+          url: baseUrl + '/approveQueue',
+          type: "GET",
+          success: (function (data) {
+              console.log(data);
+              var dtable = $('#table').DataTable();
+              var dt = $('#table_body');
+  
+              $.each(data, function (i, item) {
+                  dtable.row.add([
+                      `<input type="checkbox" name="item" value="${item[0]}">`,
+                      item[0], 
+                      item[1],  
+                      item[2],  
+                      item[3],  
+                      `<button id="approvedPost" class="border btn"><i class="fa fa-check-circle text-center text-success"></i></button><button id="declinePost" class="border btn text-danger"><i class="fa fa-cancel text-center"></i></button><button id="ViewPost" class="border btn"><i class="fa fa-eye text-center text-primary"></i></button>`
+                  ]).draw(false);
+              
+              });
+              //var newDiv = $('<div class="d-flex float-left mb-3">'                                                                                                                                                                                                                                              +
+              //  '<button type="button" name="post" id="ApprovalAllPOST" class="bg-success btn m-0 mr-1  rounded text-white w-100">Approve</button>' +
+              // '<button type="button" name="post" id="DeclineAll" class="bg-danger btn m-0  py-2 rounded text-white w-100">Decline</button>' +
+              //'</div>');
+
+               //Insert the new div before the label tag
+              //newDiv.insertAfter('#table_filter');
+              $('#allApprovedbtn').prop("disabled", true);
+              $('#allDeclinebtn').prop("disabled", true);
+              myhideLoader();
+            })
+      });
+  }
+    //init_dt();
+    load_data_datatable();
+
+
+
+    $(".checkAll").on("click", function() {
+      $(this)
+        .closest("table")
+        .find("tbody :checkbox")
+        .prop("checked", this.checked)
+        .closest("tr")
+        .toggleClass("selected", this.checked);
+    });
+
+  });
+
+  $(document).on('change', 'input[type="checkbox"]',function() {
+    console.log("test1");
+    updateButtonState(); // Update button state when checkboxes change
+  });
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/drawer_main.js') }}"></script>  
+<script type="text/javascript" src="{{ url_for('static', filename='js/add_media.js') }}"></script>  
+<script src="https://unpkg.com/petite-vue"></script>
+<script src="/static/js/postview.js"></script>  
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.emojipicker.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.emojis.js') }}"></script>
+<script>
+  $(document).ready(function() {
+    CRUD_Event_ID=''
+    $('#table').on('click', '#ViewPost', function () {
+    var ScheduleID = $(this).closest('tr').find('td:eq(1)').text();
+    CRUD_Event_ID=ScheduleID;
+    $('#NewtitleSchedule').val('');
+    $('#fb_data').val('');
+    $("#modifieddate").val('');
+    $('.image_preview').empty();
+      myshowLoader();
+      axios({
+        method:'POST',
+        url: baseUrl + '/social_group/getSchedule',
+        data: {
+          ScheduleID:ScheduleID  
+        }  
+      }).then(res => {
+        let Response_data = res.data;
+        console.log(Response_data)
+        myhideLoader();
+        console.log(Response_data[0]);
+        $('#NewtitleSchedule').val(Response_data[0]);
+        $('#fb_data').val(Response_data[1]);
+        $("#modifieddate").val(Response_data[2]);
+        if(Response_data[4]!="uploads/no_file.txt")
+        {
+          $(".file-upload").addClass('active');
+          $("#noFile").text("uploadFilename");
+          const imgTag = $('<img>');
+          imgTag.addClass("mycanvas")
+          imgTag.attr('src',Response_data[4]);
+          $('.image_preview').html(imgTag);
+        }
+
+        
+        $(".panel-wrap1").toggleClass("panel-visible");
+            $('.demoWrapper').toggleClass("wrappervisible");
+      
+        $('.UpdateElement').show();
+    
+      }).catch(err => {
+        myhideLoader();
+        showToastMessage('error', 'Something Went Wrong!')
+      });
+       
+
+    
+    
+  });
+
+  $("#UpdateSchedule").click(function() {
+    let ScheduleID=CRUD_Event_ID;
+    let nTitle=$('#NewtitleSchedule').val();
+    let nContent=$('#fb_data').val();
+    let nDate=$("#modifieddate").val();
+    let nMediaURL=$(".mycanvas").attr('src');
+    print('MediaID',nMediaURL)
+    var linkUrl = $('#web_url').val();
+    if (linkUrl) {
+    var imgUrl = $('.url_preview .img_section img').attr('src') || "https://admin.amslaw.ph/uploads/misc/noImagePreview.jpg";
+    var titleText = $('#title').text().trim() || "No title";
+    var UrlData = {
+    "Status":true,
+    "url": linkUrl,
+    "imgUrl": imgUrl,
+    "title": titleText
+    };}
+    else{UrlData={"Status":false};}
+
+    myshowLoader();
+    axios({
+      method: 'POST',
+      url: baseUrl + '/social_group/modifySchedule',
+      data: {
+        ScheduleID:ScheduleID,
+        nTitle:nTitle,
+        nContent:nContent,
+        nDate:nDate,
+        nMediaURL:nMediaURL,
+        UrlData:UrlData ,
+        userTimezone:Intl.DateTimeFormat().resolvedOptions().timeZone
+      }  
+    }).then(res => {
+      const response = res.data;
+      myhideLoader();
+        if(response=='200'){
+          showToastMessage('success', 'Updated! Successfully')
+          location.reload(true);
+        }
+        else{
+          showToastMessage('error', 'Try Again Soon!')
+        }
+  
+    }).catch(err => {
+      myhideLoader();
+      showToastMessage('error', 'Something Went Wrong!')
+    });
+    
+  });  
+
+  $("#DeclineUser").click(function() {
+    var requestId=CRUD_Event_ID;
+
+    let confirmation = window.confirm('Do you want to declined this post?');
+        
+    if (confirmation) 
+    {
+    myshowLoader();
+
+    axios({
+        method: 'DELETE',
+        url: baseUrl + '/PostApprove/approveQueue',
+        data: {
+            requestId: requestId,
+        }
+    }).then(res => {
+        myhideLoader();
+        showToastMessage('success','Post : Declined!')
+        location.reload(true);
+
+    }).catch(err => {
+        myhideLoader();
+        showToastMessage('error','Post :Unable to Declined!')
+        console.log(err);
+    });
+  }
+  else {
+      showToastMessage('success','The Post will not be declined.');  
+  
+  }
+    
+  });  
+
+	$('#fb_data').emojiPicker();   
+
+	$(document).on('click', '#urlbtn', function() {
+		$(".urlArea").toggle();
+	});
+
+	$("#image_Editor").click(function() {
+		console.log("Online Editor Clicked!");
+		$(".panel-wrap2").toggleClass("panel-visible");
+	
+	});
+
+	$("#clicker").click(function() {
+		// Toggle the panel visibility
+		$(".panel-wrap1").toggleClass("panel-visible");
+		$('.demoWrapper').toggleClass("wrappervisible");
+		});
+	
+	$("#CloseWrapper").click(function() {
+		// Toggle the panel visibility
+		$(".panel-wrap1").toggleClass("panel-visible");
+		$('.demoWrapper').toggleClass("wrappervisible");
+		});
+	$("#CloseWrapper2").click(function() {
+		// Toggle the panel visibility
+		$(".panel-wrap2").toggleClass("panel-visible");
+	
+		});
+		
+	$("#ai_side_btn, #ai_side_close",).click(function() {
+		// Toggle the panel visibility
+		$(".ai_side_panel").toggleClass("AIpanel-visible");
+		});
+		
+	});
+
+	</script>
+
+{% endblock %}
